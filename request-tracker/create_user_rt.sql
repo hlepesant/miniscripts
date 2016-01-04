@@ -5,5 +5,5 @@ GRANT USAGE ON `rtdb` . * TO 'rtuser'@'localhost' IDENTIFIED BY 'RVnGW8Yy2KNDkDr
 GRANT ALL PRIVILEGES ON `rtdb` . * TO 'rtuser'@'localhost';
 -- to drop
 -- DROP USER 'rtuser'@'localhost';
-DROP DATABASE IF EXISTS `rtdb` ;
+-- DROP DATABASE IF EXISTS `rtdb` ;
 FLUSH PRIVILEGES;

@@ -72,6 +72,8 @@ groupadd rt
 
 mysql -uroot -pmypass < create_user_rt.sql
 
+mysqladmin -uroot -pmypass drop rtdb
+
 if [ ! -e "rt.tar.gz" ]
 then
 	wget https://download.bestpractical.com/pub/rt/release/rt.tar.gz
@@ -81,6 +83,9 @@ if [ ! -d "rt-4.2.12" ]
 then
 	tar xvfz rt.tar.gz
 fi
+
+
+
 
 cd rt-4.2.12
 
@@ -110,9 +115,17 @@ chmod 644 /opt/rt4/etc/RT_Config.pm
 a2enmod fastcgi
 a2enmod ssl
 
+
+mkdir ssl
+openssl genrsa -des3 -out ssl/server.withpass.key 2048
+openssl rsa -in ssl/server.withpass.key -out ssl/server.nopass.key
+openssl req -new -key ssl/server.nopass.key -out ssl/rt.example.com.csr -subj "/C=FR/ST=Indre-et-Loire/O=Example Ltd/CN=rt.example.com"
+openssl x509 -req -days 3650 -in ssl/rt.example.com.csr -signkey ssl/server.nopass.key -out ssl/rt.example.com.crt
+
+
 mkdir -p /opt/rt4/ssl
-cp server.nopass.key /opt/rt4/ssl/
-cp rt.example.com.crt /opt/rt4/ssl/
+cp ssl/server.nopass.key /opt/rt4/ssl/
+cp ssl/rt.example.com.crt /opt/rt4/ssl/
 
 cp rt.example.com.conf /etc/apache2/sites-available/
 a2ensite rt.example.com.conf
