@@ -1,0 +1,9 @@
+-- to create user and database
+CREATE DATABASE IF NOT EXISTS `rtdb` ;
+CREATE USER 'rtuser'@'localhost' IDENTIFIED BY 'RVnGW8Yy2KNDkDr7Fm4rfe4K';
+GRANT USAGE ON `rtdb` . * TO 'rtuser'@'localhost' IDENTIFIED BY 'RVnGW8Yy2KNDkDr7Fm4rfe4K' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+GRANT ALL PRIVILEGES ON `rtdb` . * TO 'rtuser'@'localhost';
+-- to drop
+-- DROP USER 'rtuser'@'localhost';
+DROP DATABASE IF EXISTS `rtdb` ;
+FLUSH PRIVILEGES;

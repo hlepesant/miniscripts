@@ -24,8 +24,8 @@ Set( $rtname, 'example.com');
 #     Plugin( "RT::Authen::ExternalAuth" );
 
 Set($Organization, "MyCompany");
-Set($CorrespondAddress, 'rt@rt.example.com);
-Set($CommentAddress, 'rt-comment@rt.example.com');
+Set($CorrespondAddress, "rt@rt.example.com");
+Set($CommentAddress, "rt-comment@rt.example.com");
 Set($WebDomain, "rt.example.com");
 Set($WebPort, 443);
 Set($Timezone, "Europe/Paris");

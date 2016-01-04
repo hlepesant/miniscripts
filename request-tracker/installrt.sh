@@ -70,9 +70,17 @@ cpan Plack::Handler::Starlet
 
 groupadd rt
 
-wget https://download.bestpractical.com/pub/rt/release/rt.tar.gz
+mysql -uroot -pmypass < create_user_rt.sql
 
-tar xvfz rt.tar.gz
+if [ ! -e "rt.tar.gz" ]
+then
+	wget https://download.bestpractical.com/pub/rt/release/rt.tar.gz
+fi
+
+if [ ! -d "rt-4.2.12" ]
+then
+	tar xvfz rt.tar.gz
+fi
 
 cd rt-4.2.12
 
@@ -90,10 +98,12 @@ cd rt-4.2.12
 
 make testdeps
 make install
+make initialize-database
 
 cd ..
 cp RT_SiteConfig.pm /opt/rt4/etc/RT_SiteConfig.pm
 chmod 644 /opt/rt4/etc/RT_SiteConfig.pm
+chmod 644 /opt/rt4/etc/RT_Config.pm
 
 #apt-get -y install libapache2-authcassimple-perl
 
@@ -109,3 +119,4 @@ a2ensite rt.example.com.conf
 
 apachectl -t
 apachectl -S
+service apache2 restart
