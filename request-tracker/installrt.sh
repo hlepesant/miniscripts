@@ -68,6 +68,8 @@ cpan Mozilla::CA
 cpan Plack::Handler::Starlet
 
 a2enmod fastcgi
+a2enmod ssl
+
 
 groupadd rt
 
@@ -79,6 +81,7 @@ cd rt-4.2.12
 
 ./configure --enable-graphviz \
 	--enable-gd \
+	--with-fastcgi \
 	--with-web-user=www-data \
 	--with-web-group=www-data \
 	--with-db-type=mysql \
@@ -90,5 +93,9 @@ cd rt-4.2.12
 
 make testdeps
 make install
+
+cd ..
+cp RT_SiteConfig.pm /opt/rt4/etc/RT_SiteConfig.pm
+chmod 644 /opt/rt4/etc/RT_SiteConfig.pm
 
 #apt-get -y install libapache2-authcassimple-perl
