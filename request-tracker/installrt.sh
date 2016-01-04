@@ -67,6 +67,8 @@ cpan MIME::Entity
 cpan Mozilla::CA
 cpan Plack::Handler::Starlet
 
+a2enmod fastcgi
+
 groupadd rt
 
 wget https://download.bestpractical.com/pub/rt/release/rt.tar.gz
