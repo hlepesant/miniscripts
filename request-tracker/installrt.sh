@@ -6,7 +6,8 @@ apt-get install -y build-essential
 
 apt-get install -y mariadb-client
 
-apt-get install -y apache2-utils \
+apt-get install -y apache2 \
+    apache2-utils \
 	libapache2-mod-fastcgi \
 	libtext-quoted-perl \
 	libhtml-scrubber-perl \
