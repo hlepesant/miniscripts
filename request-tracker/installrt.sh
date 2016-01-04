@@ -67,9 +67,6 @@ cpan MIME::Entity
 cpan Mozilla::CA
 cpan Plack::Handler::Starlet
 
-a2enmod fastcgi
-a2enmod ssl
-
 
 groupadd rt
 
@@ -99,3 +96,16 @@ cp RT_SiteConfig.pm /opt/rt4/etc/RT_SiteConfig.pm
 chmod 644 /opt/rt4/etc/RT_SiteConfig.pm
 
 #apt-get -y install libapache2-authcassimple-perl
+
+a2enmod fastcgi
+a2enmod ssl
+
+mkdir -p /opt/rt4/ssl
+cp server.nopass.key /opt/rt4/ssl/
+cp rt.example.com.crt /opt/rt4/ssl/
+
+cp rt.example.com.conf /etc/apache2/sites-available/
+a2ensite rt.example.com.conf
+
+apachectl -t
+apachectl -S
