@@ -1,8 +1,14 @@
 #!/bin/bash
 
+export DEBIAN_FRONTEND=noninteractive
+
 apt-get update
 
 apt-get install -y build-essential
+
+debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password password mypass'
+debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password_again password mypass'
+apt-get install -y mariadb-server
 
 apt-get install -y mariadb-client
 
