@@ -53,6 +53,7 @@ apt-get install -y apache2 \
 	libdata-ical-perl \
 	libregexp-common-net-cidr-perl \
 	libemail-address-list-perl \
+	liblog-dispatch-perl \
 	libjson-perl
 
 cpan Encode
@@ -60,6 +61,13 @@ cpan MIME::Entity
 cpan Mozilla::CA
 cpan Plack::Handler::Starlet
 
+groupadd rt
+
+wget https://download.bestpractical.com/pub/rt/release/rt.tar.gz
+
+tar xvfz rt.tar.gz
+
+cd rt-4.2.12
 
 ./configure --enable-graphviz \
 	--enable-gd \
@@ -75,4 +83,4 @@ cpan Plack::Handler::Starlet
 make testdeps
 make install
 
-apt-get -y install libapache2-authcassimple-perl
+#apt-get -y install libapache2-authcassimple-perl
