@@ -84,9 +84,6 @@ then
 	tar xvfz rt.tar.gz
 fi
 
-
-
-
 cd rt-4.2.12
 
 ./configure --enable-graphviz \
@@ -114,7 +111,6 @@ chmod 644 /opt/rt4/etc/RT_Config.pm
 
 a2enmod fastcgi
 a2enmod ssl
-
 
 mkdir ssl
 openssl genrsa -des3 -out ssl/server.withpass.key 2048
