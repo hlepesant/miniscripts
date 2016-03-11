@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+DB_NAME=""
+DB_USER=""
+DB_HOST="localhost"
+DB_PASS=""
+
+sed -e "s/_DB_NAME_/${DB_NAME}/" \
+    -e "s/_DB_USER_/${DB_USER}/" \
+    -e "s/_DB_PASS_/${DB_PASS}/" \
+    -e "s/_DB_HOST_/${DB_HOST}/" create_user.sql
