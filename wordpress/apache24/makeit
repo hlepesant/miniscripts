@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+SERVERNAME="www.lepesant.fr"
+
+sed -e "s/_SERVERNAME_/${SERVERNAME}/" wordpress.conf
