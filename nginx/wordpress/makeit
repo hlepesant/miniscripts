@@ -1,8 +1,0 @@
-#!/bin/bash
-
-
-DOMAIN="lepesant.fr"
-SERVERNAME=$(printf "www.%s" ${DOMAIN})
-
-sed -e "s/_DOMAIN_/${DOMAIN}/" \
-    -e "s/_SERVERNAME_/${SERVERNAME}/" wordpress.conf
