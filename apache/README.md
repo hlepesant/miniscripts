@@ -191,6 +191,7 @@ Personnellement je préfère mettre en place une configuration un peu plus évol
 
 * [Enabling SPDY and HSTS on Apache](https://xuri.me/2015/02/25/enabling-spdy-and-hsts-on-apache.html)
 * [Slowloris](http://www.acunetix.com/blog/articles/slow-http-dos-attacks-mitigate-apache-http-server/)
-* 
+* [UT1C](http://docplayer.fr/8763509-Universite-toulouse-1-capitole.html) 
+* [NBS](https://www.nbs-system.co.uk/blog-2/naxsi-web-application-firewall-for-nginx.html)
 
 
