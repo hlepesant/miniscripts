@@ -8,21 +8,69 @@ Une liste des modules Apache indispensables ou presque
 
 ### mod_rewrite
 
+Indispensable pour avoir de zolies urls.
+
 ```
 $ sudo a2enmod rewrite
 $ sudo service apache2 restart
 
 ```
+#### Apache + Wordpress
 
-### mod_headers
-
-```
-$ sudo a2enmod headers
-$ sudo service apache2 restart
+Dans le fichier de configuration du site :
 
 ```
+<Directory /opt/WebSites/_SERVERNAME_/wordpress>
+	[...]
+	AllowOverride All
+	[...]
+</Directory>
+```
+
+Dans le .htaccess ou le fichier de configuration du site :
+
+```
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+```
+
+#### Redirection vers HTTPS
+
+
+Host configuration file
+
+```
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{SERVER_PORT} 80
+    RewriteCond %{HTTPS} !=on
+    RewriteRule (.*)  https://%{HTTP_HOST}%{REQUEST_URI}
+</IfModule>
+```
+
+.htaccess
+
+```
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*) https://%{HTTP_HOST}/$1 [NC,R=301,L]
+</IfModule>
+```
+
+
 
 ### mod_ssl
+
+https://httpd.apache.org/docs/2.4/en/mod/mod_ssl.html
 
 ```
 $ sudo a2enmod ssl
@@ -30,8 +78,25 @@ $ sudo service apache2 restart
 
 ```
 
+### mod_headers
+
+https://httpd.apache.org/docs/2.4/en/mod/mod_headers.html
 
 
+
+```
+$ sudo a2enmod headers
+$ sudo service apache2 restart
+
+```
+
+En complément de mod_ssl pour renforcer  la Strict Sécurité des transports HTTPS (HSTS)
+
+```
+<IfModule mod_headers.c>
+Header add Strict-Transport-Security: "max-age=15552000; includeSubDomains; preload"
+</IfModule>
+```
 
 
 ## Extra Modules
