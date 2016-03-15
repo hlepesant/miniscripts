@@ -42,7 +42,10 @@ https://developers.google.com/speed/
 
 Pour tester vos configurations : https://developers.google.com/speed/pagespeed/
 
-Avec les 2 modules suivants (pour Apache et Nginx): 
+Avec les 2 modules suivants : 
+
+> N.B.:
+> Existante pour Apache et Nginx
 
 ### mod_spdy
 * Google SPDY: https://developers.google.com/speed/spdy/
@@ -59,7 +62,6 @@ $ sudo service apache2 restart
 ### mod_pagespeed
 * Google PageSpeed: https://developers.google.com/speed/pagespeed/module/
 
-Existe pour Apache et Nginx
 
 ```
 $ wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
