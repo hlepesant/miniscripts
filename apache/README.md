@@ -45,7 +45,7 @@ Pour tester vos configurations : https://developers.google.com/speed/pagespeed/
 Avec les 2 modules suivants : 
 
 > N.B.:
-> Existante pour Apache et Nginx
+> Ils existent pour Apache et Nginx
 
 ### mod_spdy
 * Google SPDY: https://developers.google.com/speed/spdy/
