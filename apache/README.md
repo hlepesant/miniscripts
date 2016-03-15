@@ -78,6 +78,22 @@ $ sudo service apache2 restart
 
 ```
 
+
+### Configuration Apache 2.4
+```
+SSLEngine on
+SSLCompression off
+SSLCipherSuite "HIGH:!aNULL:!MD5:!3DES:!CAMELLIA:!AES128"
+SSLHonorCipherOrder on
+SSLProtocol TLSv1.2
+#SSLUseStapling on
+
+SSLCertificateFile /etc/letsencrypt/live/domain.tld/cert.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/domain.tld/privkey.pem
+SSLCertificateChainFile /etc/letsencrypt/live/domain.tld/chain.pem
+```
+
+
 ### mod_headers
 
 https://httpd.apache.org/docs/2.4/en/mod/mod_headers.html
