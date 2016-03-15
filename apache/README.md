@@ -36,15 +36,16 @@ $ sudo service apache2 restart
 
 ## Extra Modules
 
-Voici 2 modules fournis par Google afin d'augmenter le temps de génération de vos pages web.
+Si vous voulez suivre les "bons conseils de tonton Google" sur l'optimisation des vos sites et pages web 
 
-Pour tester : https://developers.google.com/speed/pagespeed/
+https://developers.google.com/speed/
 
+Pour tester vos configurations : https://developers.google.com/speed/pagespeed/
 
+Avec les 2 modules suivants (pour Apache et Nginx): 
 
 ### mod_spdy
 * Google SPDY: https://developers.google.com/speed/spdy/
-
 
 ```
 $ wget https://dl-ssl.google.com/dl/linux/direct/mod-spdy-beta_current_amd64.deb
