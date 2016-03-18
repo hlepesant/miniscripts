@@ -1,0 +1,12 @@
+[mysqld]
+query_cache_size                = 32M
+innodb_buffer_pool_size         = _INNODB_BUFFER_POOL_SIZE_ 
+innodb_log_file_size            = _INNODB_LOG_POOL_SIZE_
+innodb_log_buffer_size          = 32M
+innodb_file_per_table           = 1
+#innodb_force_recovery          = 1
+#bind-address                    = 0.0.0.0
+#max_connections                 = 200
+
+[mysql]
+max_allowed_packet              = 16M

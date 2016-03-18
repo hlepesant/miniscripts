@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# get total Memory in KB
+TOTAL_MEMORY=$(/bin/grep ^MemTotal /proc/meminfo |awk '{print $2}')
+
+
+if [ "${#TOTAL_MEMORY}" -ge 7 ]
+then
+    IBPS=`printf "%.0f" $(echo "scale=2;${TOTAL_MEMORY}/(4*1024^2)" | bc)` # in GB
+    IBPS_VAL=$(printf "%sG" ${IBPS})
+else
+    IBPS=`printf "%.0f" $(echo "scale=2;${TOTAL_MEMORY}/(4*1024)" | bc)` # in MB
+    IBPS_VAL=$(printf "%sM" ${IBPS})
+fi
+
+if [ "${IBPS}" -ge 4 ]
+then
+    ILPS=`printf "%.0f" $(echo "scale=2;${IBPS}/(4)" | bc)`
+    ILPS_VAL=$(printf "%sG" ${ILPS})
+else
+    ILPS=`printf "%.0f" $(echo "scale=2;(${IBPS}/4)*1024" | bc)`
+    ILPS_VAL=$(printf "%sM" ${ILPS})
+fi
+
+sed -e "s/_INNODB_BUFFER_POOL_SIZE_/${IBPS_VAL}/" \
+    -e "s/_INNODB_LOG_POOL_SIZE_/${ILPS_VAL}/" tunning.cnf
