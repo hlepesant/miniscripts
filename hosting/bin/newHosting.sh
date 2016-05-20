@@ -36,7 +36,12 @@ if [[ ${?} -eq 0 ]]; then
     outputError "Can't continue. Bye!!"
     exit 1
 fi
-#echo ${WEBSITE}
-#echo ${FULLPATH}
+
+make_documentroot_new_website
+
+make_virtualhost_new_website
+
+echo ${WEBSITE}
+echo ${FULLPATH}
 
 exit 0

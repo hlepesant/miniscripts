@@ -27,3 +27,29 @@ function check_exist_new_website() {
     fi
     return 1
 }
+
+function make_documentroot_new_website() {
+
+    mkdir -p ${FULLPATH}
+}
+
+function make_virtualhost_new_website() 
+{
+cat << EOF >  ${WEB_BASE_DIR}/${WEBSITE}/vhost.conf
+<VirtualHost *:80>
+	ServerName ${WEBSITE}
+	ServerAdmin webmaster@localhost
+	DocumentRoot ${FULLPATH}
+
+	<Directory ${FULLPATH}>
+		Require all granted
+		AllowOverride All
+		Options -Indexes
+	</Directory>
+
+	ErrorLog \${APACHE_LOG_DIR}/${WEBSITE}_error.log
+	CustomLog \${APACHE_LOG_DIR}/${WEBSITE}_access.log combined
+
+</VirtualHost>
+EOF
+}
