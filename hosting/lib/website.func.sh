@@ -1,7 +1,6 @@
 #!/bin/bash
 
 . ./lib/output.func.sh
-. ./lib/security.func.sh
 . ./lib/commoncheck.func.sh
 
 
@@ -61,6 +60,9 @@ function make_virtualhost_new_website()
         'prestashop')
             cp ./etc/prestashop.template ${FULLPATH}/vhost.conf 
         ;;
+        'magento')
+            cp ./etc/magento.template ${FULLPATH}/vhost.conf 
+        ;;
         *)
             cp ./etc/vhostbasic.template ${FULLPATH}/vhost.conf 
         ;;
@@ -77,16 +79,29 @@ function unpack_source()
 {
     case ${APP} in
         'wordpress')
-            ${TAR} xfz /tmp/${ARCHIVE} --directory=${FULLPATH}
+            ${TAR} xfz /tmp/${WORDPRESS_ARCHIVE} --directory=${FULLPATH}
+            sync
+            rm -f /tmp/${WORDPRESS_ARCHIVE}
         ;;
         'prestashop')
-            echo "${UNZIP} /tmp/${ARCHIVE} -d ${FULLPATH}/"
-            ${UNZIP} /tmp/${ARCHIVE} -d ${FULLPATH}/
+            ${UNZIP} /tmp/${PRESTASHOP_ARCHIVE} -d ${FULLPATH}/
+            sync
+            rm -f /tmp/${PRESTASHOP_ARCHIVE}
+        ;;
+        'magento')
+            ${UNZIP} /tmp/${MAGENTO_ARCHIVE} -d ${FULLPATH}/
+            sync
+            rm -f /tmp/${MAGENTO_ARCHIVE}
         ;;
         *)
             echo "nothing to do"
         ;;
     esac
     
-#    rm -f /tmp/${ARCHIVE}
+}
+
+
+function enable_virtualhost()
+{
+    ${LN} -s ${FULLPATH}/vhost.conf ${APACHE_SITES_ENABLED}/${WEBSITE}.conf
 }

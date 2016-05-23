@@ -44,13 +44,20 @@ case ${APP} in
     'wordpress')
         APP_SOURCE=${WORDPRESS_URL_ARCHIVE}
         WEBDIR='wordpress'
-        ARCHIVE='wordpress.tar.gz'
+        ARCHIVE=${WORDPRESS_ARCHIVE}
         get_web_application ${APP_SOURCE} ${ARCHIVE}
     ;;
     'prestashop')
         APP_SOURCE=${PRESTASHOP_URL_ARCHIVE}
-        WEBDIR='perstashop'
-        ARCHIVE='perstashop.zip'
+        WEBDIR='prestashop'
+        ARCHIVE=${PRESTASHOP_ARCHIVE}
+        get_web_application ${APP_SOURCE} ${ARCHIVE}
+    ;;
+    'magento')
+        APP_SOURCE=${MAGENTO_URL_ARCHIVE}
+        WEBDIR='magento'
+        #ARCHIVE='magento.zip'
+        ARCHIVE=${MAGENTO_ARCHIVE}
         get_web_application ${APP_SOURCE} ${ARCHIVE}
     ;;
     *)
@@ -83,3 +90,5 @@ make_documentroot_new_website
 make_virtualhost_new_website
 
 unpack_source
+
+enable_virtualhost

@@ -1,0 +1,47 @@
+<VirtualHost *:80>
+    ServerName #SERVER_NAME#
+
+    ServerAdmin webmaster@localhost
+    DocumentRoot /#DOCUMENT_ROOT#/prestashop
+
+    RewriteEngine on
+    RewriteCond %{HTTP_HOST}                !^#SERVER_NAME#(:80)?$ [NC]
+    RewriteRule ^/(.*)                      http://#SERVER_NAME#/$1 [L,R=301]
+    RewriteOptions inherit
+
+    <Directory /#DOCUMENT_ROOT#/prestashop>
+        Require all granted
+        AllowOverride All
+        Options -Indexes
+
+        FileETag none
+        
+        ExpiresActive On
+        ExpiresDefault "access plus 5 seconds"
+        ExpiresByType image/x-icon "access plus 2500000 seconds"
+        ExpiresByType image/jpeg "access plus 2500000 seconds"
+        ExpiresByType image/png "access plus 2500000 seconds"
+        ExpiresByType image/gif "access plus 2500000 seconds"
+        ExpiresByType application/x-shockwave-flash "access plus 2500000 seconds"
+        ExpiresByType text/css "access plus 600000 seconds"
+        ExpiresByType text/javascript "access plus 200000 seconds"
+        ExpiresByType application/javascript "access plus 200000 seconds"
+        ExpiresByType application/x-javascript "access plus 200000 seconds"
+        ExpiresByType text/html "access plus 600 seconds"
+        ExpiresByType application/xhtml+xml "access plus 600 seconds"
+        
+        <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteRule ^index\.php$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.php [L]
+        </IfModule>
+
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/#SERVER_NAME#_error.log
+    CustomLog ${APACHE_LOG_DIR}/#SERVER_NAME#_access.log combined
+
+</VirtualHost>

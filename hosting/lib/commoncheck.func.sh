@@ -1,12 +1,13 @@
 #!/bin/bash
 
+. ./etc/global.conf.sh
 
-WGET=/usr/bin/wget
-CURL=/usr/bin/curl
-TAR=/bin/tar
-UNZIP=/usr/bin/unzip
-SED=/bin/sed
-
+function check_sudo() {
+    if [[ -z "${SUDO_USER}" ]]; then
+        outputError "Please use sudo !!"
+        exit 99
+    fi
+}
 
 function check_downloader() {
     if [[ ! -x ${WGET} && ! -x ${CURL} ]]; then
