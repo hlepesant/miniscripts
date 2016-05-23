@@ -2,7 +2,7 @@
 
 . ./etc/hosting.conf.sh
 . ./lib/output.func.sh
-. ./lib/commoncheck.func.sh
+. ./lib/check.func.sh
 
 
 check_sudo

@@ -17,8 +17,13 @@ MAGENTO_ARCHIVE='magento-lts-1.9.2.4.zip'
 
 
 
-
+PASSWORD_MIN_LENGTH=12
 
 APACHE_SITES_ENABLED='/etc/apache2/sites-enabled'
 APACHE_USER='www-data'
 APACHE_GROUP='www-data'
+
+MYSQL_ADMIN_USER='root'
+MYSQL_ADMIN_PASS='mysecretpass'
+MYSQL_CLIENT_HOST='localhost'
+DB_HOST='localhost'

@@ -1,13 +1,15 @@
 #!/bin/bash
 
+. ./etc/global.conf.sh
 . ./lib/output.func.sh
-. ./lib/commoncheck.func.sh
+. ./lib/common.func.sh
+. ./lib/check.func.sh
 
 
 function usage_new_website() {
     outputTitle " Usage :"
     outputTitle "---------"
-    outputNotice "${0} -w www.newsite.tld -a [application]"
+    outputNotice "${0} -w www.newsite.tld -a [application] -u [mysql user name]"
     echo ""
     outputNotice "Supported applications :"
     outputNotice "------------------------"
@@ -48,8 +50,6 @@ function get_web_application() {
         $(${CURL} -o /tmp/${ARCHIVE} --url ${url_arch})
     fi
 }
-
-
 
 function make_virtualhost_new_website() 
 {
@@ -99,7 +99,6 @@ function unpack_source()
     esac
     
 }
-
 
 function enable_virtualhost()
 {
