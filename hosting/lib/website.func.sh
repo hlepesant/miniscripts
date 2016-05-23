@@ -2,12 +2,18 @@
 
 . ./lib/output.func.sh
 . ./lib/security.func.sh
+. ./lib/commoncheck.func.sh
 
 
 function usage_new_website() {
     outputTitle " Usage :"
     outputTitle "---------"
-    outputNotice "${0} -w www.newsite.tld"
+    outputNotice "${0} -w www.newsite.tld -a [application]"
+    echo ""
+    outputNotice "Supported applications :"
+    outputNotice "------------------------"
+    outputNotice " - wordrpess"
+    outputNotice " - prestashop"
     echo ""
 }
 
@@ -30,26 +36,57 @@ function check_exist_new_website() {
 
 function make_documentroot_new_website() {
 
-    mkdir -p ${FULLPATH}
+    mkdir -p ${DOCUMENT_ROOT}
 }
+
+function get_web_application() {
+    local url_arch=${1}
+    local output=${2}
+
+    if [[ -x ${WGET} ]]; then
+        $(${WGET} --output-document=/tmp/${output} ${url_arch})
+    elif [[ -x ${CURL} ]]; then
+        $(${CURL} -o /tmp/${ARCHIVE} --url ${url_arch})
+    fi
+}
+
+
 
 function make_virtualhost_new_website() 
 {
-cat << EOF >  ${WEB_BASE_DIR}/${WEBSITE}/vhost.conf
-<VirtualHost *:80>
-	ServerName ${WEBSITE}
-	ServerAdmin webmaster@localhost
-	DocumentRoot ${FULLPATH}
+    case ${APP} in
+        'wordpress')
+            cp ./etc/wordpress.template ${FULLPATH}/vhost.conf 
+        ;;
+        'prestashop')
+            cp ./etc/prestashop.template ${FULLPATH}/vhost.conf 
+        ;;
+        *)
+            cp ./etc/vhostbasic.template ${FULLPATH}/vhost.conf 
+        ;;
+    esac
 
-	<Directory ${FULLPATH}>
-		Require all granted
-		AllowOverride All
-		Options -Indexes
-	</Directory>
+    local escapedpath=$(echo ${FULLPATH}|${SED} -e 's/\//\\\//g')
 
-	ErrorLog \${APACHE_LOG_DIR}/${WEBSITE}_error.log
-	CustomLog \${APACHE_LOG_DIR}/${WEBSITE}_access.log combined
+    ${SED} -i "s/#SERVER_NAME#/${WEBSITE}/g" ${FULLPATH}/vhost.conf 
+    ${SED} -i "s/#DOCUMENT_ROOT#/${escapedpath}/g" ${FULLPATH}/vhost.conf 
+}
 
-</VirtualHost>
-EOF
+
+function unpack_source()
+{
+    case ${APP} in
+        'wordpress')
+            ${TAR} xfz /tmp/${ARCHIVE} --directory=${FULLPATH}
+        ;;
+        'prestashop')
+            echo "${UNZIP} /tmp/${ARCHIVE} -d ${FULLPATH}/"
+            ${UNZIP} /tmp/${ARCHIVE} -d ${FULLPATH}/
+        ;;
+        *)
+            echo "nothing to do"
+        ;;
+    esac
+    
+#    rm -f /tmp/${ARCHIVE}
 }

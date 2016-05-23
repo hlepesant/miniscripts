@@ -1,0 +1,55 @@
+<VirtualHost *:80>
+    ServerName #SERVER_NAME#
+    
+    DocumentRoot #DOCUMENT_ROOT#/wordpress
+    DirectoryIndex index.php index.html
+
+    <Directory />
+        Require all granted
+        AllowOverride All
+    </Directory>
+
+    <Directory #DOCUMENT_ROOT#/wordpress/>
+        Order Allow,Deny
+        Allow from all
+        Options +FollowSymLinks
+        AllowOverride All
+        
+        
+        # Block the include-only files.
+        <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+
+            RewriteRule ^index\.php$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.php [L]
+
+            RewriteRule ^wp-admin/includes/ - [F,L]
+            RewriteRule !^wp-includes/ - [S=3]
+            RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
+            RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
+            RewriteRule ^wp-includes/theme-compat/ - [F,L]
+        </IfModule>
+    
+    </Directory>
+
+    <files wp-login.php>
+#       Require ip IP.PUBLIQUE.DU.CLIENT
+        Require ip 91.206.156.62
+        Require ip 82.228.156.32
+    </files>
+
+    <files wp-config.php>
+        order allow,deny
+        deny from all
+    </files>
+    
+    php_value post_max_size 50M
+    php_value upload_max_filesize 50M
+    
+    LogLevel warn
+    ErrorLog ${APACHE_LOG_DIR}/#SERVER_NAME#_error.log
+    CustomLog ${APACHE_LOG_DIR}/#SERVER_NAME#_access.log combined
+</VirtualHost>
