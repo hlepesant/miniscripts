@@ -9,12 +9,19 @@
 function usage_new_website() {
     outputTitle " Usage :"
     outputTitle "---------"
-    outputNotice "${0} -w www.newsite.tld -a [application] -u [mysql user name]"
+    outputNotice "${0} -w www.newsite.tld -f ftpusername -a [application] -u [mysql user name]"
     echo ""
     outputNotice "Supported applications :"
     outputNotice "------------------------"
     outputNotice " - wordrpess"
     outputNotice " - prestashop"
+    echo ""
+}
+
+function usage_clean_website() {
+    outputTitle " Usage :"
+    outputTitle "---------"
+    outputNotice "${0} -w www.newsite.tld"
     echo ""
 }
 
@@ -45,9 +52,9 @@ function get_web_application() {
     local output=${2}
 
     if [[ -x ${WGET} ]]; then
-        $(${WGET} --output-document=/tmp/${output} ${url_arch})
+        $(${WGET} --quiet --output-document=/tmp/${output} ${url_arch})
     elif [[ -x ${CURL} ]]; then
-        $(${CURL} -o /tmp/${ARCHIVE} --url ${url_arch})
+        $(${CURL} --silent -o /tmp/${ARCHIVE} --url ${url_arch})
     fi
 }
 
@@ -103,4 +110,20 @@ function unpack_source()
 function enable_virtualhost()
 {
     ${LN} -s ${FULLPATH}/vhost.conf ${APACHE_SITES_ENABLED}/${WEBSITE}.conf
+}
+
+function restart_webserver()
+{
+   service apache2 restart
+}
+
+function remove_website_folder() {
+
+    ${RM} -rf ${FULLPATH}
+}
+
+function remove_virtualhost()
+{
+    echo "${APACHE_SITES_ENABLED}/${WEBSITE}.conf"
+    ${RM} -f ${APACHE_SITES_ENABLED}/${WEBSITE}.conf
 }

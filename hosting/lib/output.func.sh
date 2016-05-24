@@ -13,7 +13,7 @@ function outputNotice() {
 
 function outputInfo() {
     local msg=${1}
-    echo -e "\e[34m${msg}\e[0m"
+    echo -e "\e[36m${msg}\e[0m"
 }
 
 function outputWarning() {

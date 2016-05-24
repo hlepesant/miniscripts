@@ -3,6 +3,7 @@
 . ./etc/hosting.conf.sh
 . ./lib/website.func.sh
 . ./lib/database.func.sh
+. ./lib/ftpserver.func.sh
 
 
 check_sudo
@@ -12,7 +13,7 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-while getopts ":w:a:u:d:" opt; do
+while getopts ":w:a:u:d:f:" opt; do
     case $opt in
         a)
             APP=${OPTARG}
@@ -26,6 +27,9 @@ while getopts ":w:a:u:d:" opt; do
         w)
             WEBSITE=${OPTARG}
             ;;
+        f)
+            FTP_USER=${OPTARG}
+            ;;
         \?)
             outputWarning "Invalid option: -$OPTARG"
             exit 1
@@ -38,7 +42,7 @@ while getopts ":w:a:u:d:" opt; do
 done
 
 
-if [[ -z ${WEBSITE} ]]; then
+if [[ -z ${WEBSITE} || -z ${FTP_USER} ]]; then
     usage_new_webiste
     exit 1
 fi
@@ -93,13 +97,22 @@ if [[ ${CHECK_DB_OPTION} -ge 1 ]]; then
     fi
 fi
 
+if [[ -z ${FTP_USER} ]]; then
+    outputError "No FTP user specified"
+    outputError "Can't continue. Bye!!"
+    exit 1
+fi
+
+
 if [[ ${GET_APP} -ge 1 ]]; then
+    outputInfo "Getting application archives : ${ARCHIVE}"
     get_web_application ${APP_SOURCE} ${ARCHIVE}
 fi
 
 FULLPATH=$(printf "%s/%s" ${WEB_BASE_DIR} ${WEBSITE})
 DOCUMENT_ROOT=$(printf "%s/%s/%s" ${WEB_BASE_DIR} ${WEBSITE} ${WEBDIR})
 
+outputInfo "Checking website do not already exist"
 check_exist_new_website ${DOCUMENT_ROOT}
 
 if [[ ${?} -eq 0 ]]; then
@@ -108,27 +121,23 @@ if [[ ${?} -eq 0 ]]; then
     exit 1
 fi
 
-echo "WEBSITE       = ${WEBSITE}"
-echo "FULLPATH      = ${FULLPATH}"
-echo "DOCUMENT_ROOT = ${DOCUMENT_ROOT}"
-echo "APP           = ${APP}"
-echo "APP_SOURCE    = ${APP_SOURCE}"
-echo "WEBDIR        = ${WEBDIR}"
-
 # Apache
+outputInfo "Create document root"
 make_documentroot_new_website
+
+outputInfo "Create virtualhost config file"
 make_virtualhost_new_website
+
+outputInfo "Unpacking application"
 unpack_source
 
 # MySQL
 DB_PASS=$(make_password)
 
-echo "DB_USER       = ${DB_USER}"
-echo "DB_PASS       = ${DB_PASS}"
-echo "DB_NAME       = ${DB_NAME}"
-echo "DB_HOST       = ${DB_HOST}"
-
+outputInfo "Create Database : ${DB_NAME} on ${DB_HOST}"
 create_database
+
+outputInfo "Create database user : ${DB_USER}"
 create_user
 
 
@@ -148,6 +157,36 @@ case ${APP} in
     ;;
 esac
 
+# PureFTPd
+FTP_PASS=$(make_password)
+
+outputInfo "Create FTP user : ${FTP_USER}"
+ftp_create_user
 
 # Apache 2
+outputInfo "Enabling virtualhost"
 enable_virtualhost
+
+outputInfo "Reloading Apache"
+restart_webserver
+
+outputInfo " Resume"
+outputInfo "--------"
+
+outputTitle "Virtualhost"
+echo "WEBSITE       = ${WEBSITE}"
+echo "FULLPATH      = ${FULLPATH}"
+echo "DOCUMENT_ROOT = ${DOCUMENT_ROOT}"
+echo "APP           = ${APP}"
+echo "APP_SOURCE    = ${APP_SOURCE}"
+echo "WEBDIR        = ${WEBDIR}"
+
+outputTitle "Database : MySQL"
+echo "DB_USER       = ${DB_USER}"
+echo "DB_PASS       = ${DB_PASS}"
+echo "DB_NAME       = ${DB_NAME}"
+echo "DB_HOST       = ${DB_HOST}"
+
+outputTitle "FTP Access"
+echo "FTP_USER       = ${FTP_USER}"
+echo "FTP_PASS       = ${FTP_PASS}"

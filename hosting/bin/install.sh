@@ -53,6 +53,14 @@ do
     fi
 done
 
+${SED} -i -e 's/ServerTokens OS/ServerTokens Prod/' \
+    -e 's/^ServerSignature On/ServerSignature Off/' /etc/apache2/conf-enabled/security.conf
+
+if [[ $? -eq 0 ]]; then
+    restart_apache=$(($restart_apache + 1))
+fi
+
+
 if [[ ${restart_apache} -ge 1 ]]; then
     outputInfo "Restarting Apache"
     service apache2 restart
@@ -68,3 +76,7 @@ fi
 echo "yes" > /etc/pure-ftpd/conf/ChrootEveryone
 echo "33" > /etc/pure-ftpd/conf/MinUID
 echo "no" > /etc/pure-ftpd/conf/PAMAuthentication
+
+pure-pw mkdb
+
+service pure-ftpd restart

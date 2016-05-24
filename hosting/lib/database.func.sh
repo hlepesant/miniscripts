@@ -5,6 +5,9 @@
 . ./lib/check.func.sh
 
 
+MYSQL=/usr/bin/mysql
+
+
 function create_database()
 {
     ${CAT} << EOF > ${FULLPATH}/create_database.sql
@@ -32,4 +35,14 @@ FLUSH PRIVILEGES;
 EOF
 
     ${MYSQL} --user=${MYSQL_ADMIN_USER} --password=${MYSQL_ADMIN_PASS} < ${FULLPATH}/create_user.sql
+}
+
+function drop_user()
+{
+    ${MYSQL} --user=${MYSQL_ADMIN_USER} --password=${MYSQL_ADMIN_PASS} < ${FULLPATH}/drop_user.sql
+}
+
+function drop_database()
+{
+    ${MYSQL} --user=${MYSQL_ADMIN_USER} --password=${MYSQL_ADMIN_PASS} < ${FULLPATH}/drop_database.sql
 }
