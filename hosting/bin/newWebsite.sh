@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ./etc/hosting.conf.sh
+. ./lib/website.usage.sh
 . ./lib/website.func.sh
 
 
@@ -28,8 +29,8 @@ while getopts ":w:" opt; do
 done
 
 
-if [[ -z ${WEBSITE} || -z ${FTP_USER} ]]; then
-    usage_new_webiste
+if [[ -z ${WEBSITE} ]]; then
+    usage_new_website
     exit 1
 fi
 
@@ -65,7 +66,5 @@ outputInfo "--------"
 outputTitle "Virtualhost"
 echo "WEBSITE       = ${WEBSITE}"
 echo "FULLPATH      = ${FULLPATH}"
-echo "DOCUMENT_ROOT = ${DOCUMENT_ROOT}"
-echo "APP           = ${APP}"
-echo "APP_SOURCE    = ${APP_SOURCE}"
 echo "WEBDIR        = ${WEBDIR}"
+echo "DOCUMENT_ROOT = ${DOCUMENT_ROOT}"

@@ -6,25 +6,6 @@
 . ./lib/check.func.sh
 
 
-function usage_new_website() {
-    outputTitle " Usage :"
-    outputTitle "---------"
-    outputNotice "${0} -w www.newsite.tld -f ftpusername -a [application] -u [mysql user name]"
-    echo ""
-    outputNotice "Supported applications :"
-    outputNotice "------------------------"
-    outputNotice " - wordrpess"
-    outputNotice " - prestashop"
-    echo ""
-}
-
-function usage_clean_website() {
-    outputTitle " Usage :"
-    outputTitle "---------"
-    outputNotice "${0} -w www.newsite.tld"
-    echo ""
-}
-
 function missin_arg_new_website() {
     outputTitle " Error :"
     outputTitle "---------"
