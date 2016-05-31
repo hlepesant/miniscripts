@@ -17,8 +17,8 @@ php5-gd
 php5-json
 php5-mysql
 php5-readline
-mysql-client-5.5
-mysql-server-5.5
+mysql-client
+mysql-server
 pwgen
 pure-ftpd
 )
