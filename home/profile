@@ -1,0 +1,26 @@
+#
+# Test if any ssh-agent is running.
+# Start one if no
+# Warn if there is no forwarded key
+# Info if ok
+#
+# --
+#
+# To append to your ~/.profile or ~/.bashrc
+#
+
+/usr/bin/ssh-add -l > /dev/null 2>&1
+case $? in
+    0)
+        echo -e "\e[92mAgent already running and have key\e[0m"
+    ;;
+    1)
+        echo -e "\e[93mAgent running but have no key\e[0m"
+    ;;
+    2)
+        echo -e "\e[91mStarting SSH Agent\e[0m"
+        if [[ -z ${SSH_AGENT_PID} ]]; then
+            eval `ssh-agent`
+        fi
+    ;;
+esac
