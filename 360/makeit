@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DB_NAME="wordpress"
+DB_USER="wordpress"
+DB_HOST="wpsdb.calxbcwjmgy4.eu-west-1.rds.amazonaws.com"
+DB_PASS="wordpress"
+
+sed -e "s/_DB_NAME_/${DB_NAME}/" \
+    -e "s/_DB_USER_/${DB_USER}/" \
+    -e "s/_DB_PASS_/${DB_PASS}/" \
+    -e "s/_DB_HOST_/${DB_HOST}/" template_create_user.sql > create_user.sql
+
+sed -e "s/_DB_NAME_/${DB_NAME}/" \
+    -e "s/_DB_USER_/${DB_USER}/" \
+    -e "s/_DB_PASS_/${DB_PASS}/" \
+    -e "s/_DB_HOST_/${DB_HOST}/" template_wordpress.sh > wordpress.sh
